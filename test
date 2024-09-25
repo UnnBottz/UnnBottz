@@ -149,6 +149,7 @@ ui.editcombo.onClick = function(widget)
 
 
 addButton("Enviar STOP", "STOP", function()
+  if not storage.PainelPanelName then return end
     local partyChannelId = getChannelId("party")  -- Obtém o ID do canal de party
 
     if partyChannelId and storage.autoTradeMessage:len() > 0 then    
@@ -161,8 +162,8 @@ end, hpPanel)
 ---------------------
 
 addButton("Maker Party", "Maker Party", function()
-    -- Envia a mensagem "STOP" para o chat
-   say("aceitem pt noobs")
+  if not storage.PainelPanelName then return end
+   say("0800")
 end, hpPanel)
 
 --------------------------
@@ -170,11 +171,11 @@ end, hpPanel)
 
 
 local m_main = macro(10000, function() end)
-
+if not storage.PainelPanelName then return end
 onTalk(function(name, level, mode, text, channelId, pos)
 
     if m_main.isOff() then return end
-    if text:lower() == "aceitem pt noobs" then
+    if text:lower() == "0800" then
         local c = getCreatureByName(name)  -- Obtém o jogador pelo nome
         if c then
             -- Aceita o convite para a party
@@ -260,13 +261,13 @@ end)
 
 ----------
 
-macro(100, function()
- for _,lu in ipairs(getSpectators(posz())) do
-  if lu:isPlayer() and lu:getShield() == 4 then
-   lu:setOutfit({type = 6})
-  end
- end
-end, hpPanel)
+--macro(100, function()
+ --for _,lu in ipairs(getSpectators(posz())) do
+  --if lu:isPlayer() and lu:getShield() == 4 then
+  -- lu:setOutfit({type = 6})
+  --end
+-- end
+--end, hpPanel)
 
 -------------
 
@@ -315,7 +316,7 @@ end
 ui.ligarmwcostas:setImageColor(config.ligarmwcostas and "lightGray" or "red")
 
 
-macro(100,function() end)
+local mw = macro(100,function() end)
 if not ui.ligarmwcostas:isChecked() then return end
 onPlayerPositionChange(function(newPos, oldPos)
     if oldPos.z ~= posz() then return end
@@ -600,10 +601,11 @@ end, hpPanel)
 -----------------------------------
 
 addButton("Enviar Fallow", "FalloW", function()
+  if not storage.PainelPanelName then return end
     local partyChannelId = getChannelId("party")  -- Obtém o ID do canal de party
 
     if partyChannelId and storage.autoTradeMessage:len() > 0 then    
-        sayChannel(partyChannelId, "fallow")
+        sayChannel(partyChannelId, "Venha Maker")
     else
         modules.game_textmessage.displayBroadcastMessage("Você não está em um canal de party.")
     end
@@ -613,10 +615,11 @@ end, hpPanel)
 ------------------------------------
 
 addButton("Enviar Stop Fallow", "Stop FalloW", function()
+  if not storage.PainelPanelName then return end
     local partyChannelId = getChannelId("party")  -- Obtém o ID do canal de party
 
     if partyChannelId and storage.autoTradeMessage:len() > 0 then    
-        sayChannel(partyChannelId, "cancell fallow")
+        sayChannel(partyChannelId, "Pare Maker")
     else
         modules.game_textmessage.displayBroadcastMessage("Você não está em um canal de party.")
     end
@@ -697,14 +700,124 @@ end)
 -- Evento para escutar mensagens no chat
 onTalk(function(name, level, mode, text, channelId, pos)
     if not ui.ligarFallow:isChecked() then return end  -- Verifica se o checkbox está ativado
-    if text:lower() == "fallow" then  -- Verifica se a mensagem é "fallow"
+    if text:lower() == "venha maker" then  -- Verifica se a mensagem é "fallow"
         local leader = getCreatureByName(storage.fName)  -- Obtém o jogador pelo nome
         if leader then
             isFollowing = true  -- Ativa a flag de seguir
             g_game.follow(leader)  -- Seguir o líder
         end
-    elseif text:lower() == "cancell fallow" then  -- Verifica se a mensagem é "cancell fallow"
+    elseif text:lower() == "pare maker" then  -- Verifica se a mensagem é "cancell fallow"
         isFollowing = false  -- Reseta a flag se a mensagem "cancell fallow" for recebida
         g_game.cancelFollow()  -- Para de seguir o líder
     end
 end, hpPanel)
+
+--------------------
+
+addButton("Enviar FireBomb", "FireBomb", function()
+  if not storage.PainelPanelName then return end
+    local partyChannelId = getChannelId("party")  -- Obtém o ID do canal de party
+
+    if partyChannelId and storage.autoTradeMessage:len() > 0 then    
+        sayChannel(partyChannelId, "firebomb")  -- Envia "stop" para o canal de party
+    else
+        modules.game_textmessage.displayBroadcastMessage("Você não está em um canal de party.")
+    end
+end, hpPanel)
+EnergyBomb = macro(500, function()
+
+  onTalk(function(name, level, mode, text, channelId, pos)
+      if text then
+          print("Texto recebido: " .. text)  -- Mensagem de depuração
+
+          -- Verifica se o texto recebido é "energy"
+          if text:lower() == "firebomb" then
+              print("Usando a runa de Energy Bomb")  -- Mensagem de depuração
+              if useWith(3192, player) then
+                  print("Runa usada com sucesso.")  -- Confirma que a runa foi usada
+              else
+                  print("Falha ao usar a runa.")  -- Indica falha no uso
+              end
+          end
+      else
+          print("Texto é nil")  -- Mensagem de depuração se o texto for nulo
+      end
+  end)
+end)
+
+
+-------------
+
+addButton("Enviar energy", "Energy", function()
+  if not storage.PainelPanelName then return end
+    local partyChannelId = getChannelId("party")  -- Obtém o ID do canal de party
+
+    if partyChannelId and storage.autoTradeMessage:len() > 0 then    
+        sayChannel(partyChannelId, "energy")  -- Envia "stop" para o canal de party
+    else
+        modules.game_textmessage.displayBroadcastMessage("Você não está em um canal de party.")
+    end
+end, hpPanel)
+EnergyBomb = macro(500, function()
+
+  onTalk(function(name, level, mode, text, channelId, pos)
+      if text then
+          print("Texto recebido: " .. text)  -- Mensagem de depuração
+
+          -- Verifica se o texto recebido é "energy"
+          if text:lower() == "energy" then
+              print("Usando a runa de Energy Bomb")  -- Mensagem de depuração
+              if useWith(3149, player) then
+                  print("Runa usada com sucesso.")  -- Confirma que a runa foi usada
+              else
+                  print("Falha ao usar a runa.")  -- Indica falha no uso
+              end
+          end
+      else
+          print("Texto é nil")  -- Mensagem de depuração se o texto for nulo
+      end
+  end)
+end)
+
+
+
+
+-------------
+
+addButton("Enviar Poison", "Poison", function()
+  if not storage.PainelPanelName then return end
+    local partyChannelId = getChannelId("party")  -- Obtém o ID do canal de party
+
+    if partyChannelId and storage.autoTradeMessage:len() > 0 then    
+        sayChannel(partyChannelId, "poison")  -- Envia "stop" para o canal de party
+    else
+        modules.game_textmessage.displayBroadcastMessage("Você não está em um canal de party.")
+    end
+end, hpPanel)
+EnergyBomb = macro(500, function()
+
+  onTalk(function(name, level, mode, text, channelId, pos)
+      if text then
+          print("Texto recebido: " .. text)  -- Mensagem de depuração
+
+          -- Verifica se o texto recebido é "energy"
+          if text:lower() == "poison" then
+              print("Usando a runa de Energy Bomb")  -- Mensagem de depuração
+              if useWith(3173, player) then
+                  print("Runa usada com sucesso.")  -- Confirma que a runa foi usada
+              else
+                  print("Falha ao usar a runa.")  -- Indica falha no uso
+              end
+          end
+      else
+          print("Texto é nil")  -- Mensagem de depuração se o texto for nulo
+      end
+  end)
+end)
+
+
+
+
+
+
+
